@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--1.连接数据库
+    2.Mybatis数据库表映射关系的设置
+    3.dao->service->controller层代码的编写,JUnit的使用
+    4.session，图片处理工具Thumbnailator的使用
+    5.suimobile前端设计与开发-->
+
+<mapper namespace="com.imooc.o2o.dao.ShopDao"> <!--实现该接口的方法-->
+    <!--useGeneratedKeys="true"  用来自动生成id
+    一旦数据添加成功，就通过jdbc获取它主键的值，并插入到传入的实体类(shop对象)中-->
+    <insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId">
+        INSERT INTO
+        tb_shop(owner_id,area_id,shop_category_id,shop_name,shop_desc,shop_addr,
+                phone,shop_img,priority,create_time,last_edit_time,enable_status,advice)
+        VALUES
+        (#{owner.userId},#{area.areaId},#{shopCategory.shopCategoryId},#{shopName},
+		#{shopDesc},#{shopAddr},#{phone},#{shopImg},#{priority},
+		#{createTime},#{lastEditTime}, #{enableStatus},#{advice})
+    </insert>
+
+    <update id="updateShop" parameterType="com.imooc.o2o.entity.Shop">
+        <!--MyBatis支持动态SQL语句生成，
+        即当更新一个表时，我们可能需要更新其他表的数据，如果有动态SQL语句生成，
+        只需要一个语句即可。 使用标签<set>动态sql语句 <if test="成员变量!=null">对应表的字段名=#{成员变量名},</if> </set>-->
+        update tb_shop
+        <set>
+            <!--当该成员变量不为空时，就更新它-->
+            <if test="shopName != null">shop_name=#{shopName},</if>
+            <if test="shopDesc != null">shop_desc=#{shopDesc},</if>
+            <if test="shopAddr != null">shop_addr=#{shopAddr},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="shopImg != null">shop_img=#{shopImg},</if>
+            <if test="priority != null">priority=#{priority},</if>
+            <if test="lastEditTime != null">last_edit_time=#{lastEditTime},</if>
+            <if test="enableStatus != null">enable_status=#{enableStatus},</if>
+            <if test="advice != null">advice=#{advice},</if>
+            <if test="area != null">area_id=#{area.areaId},</if>
+            <if test="shopCategory != null">shop_category_id=#{shopCategory.shopCategoryId}</if>
+        </set>
+        where shop_id=#{shopId}
+    </update>
+</mapper>

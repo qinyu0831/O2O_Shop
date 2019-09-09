@@ -1,0 +1,38 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1" metadata-complete="true">
+	<display-name>Archetype Created Web Application</display-name>
+	<welcome-file-list>
+		<welcome-file>aaa.jsp</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>spring-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/spring-*.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring-dispatcher</servlet-name>
+		<!-- 默认匹配所有的请求 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+</web-app>
+
+<!--
+配置总结：
+1. pom.xml 指定依赖jar包
+2. jdbc.properties: 指定数据库的连接方式
+3. mybatis-config: 配置mybatis
+4. spring-dao : 加载jdbc.properties, mybatis-config
+                创建连接池, 配置了mybatis和数据库交互的方式
+5. spring-service : 把spring-dao配好的dataSource注入配置事务管理器
+6. spring-web: 定义DispacherServlet如何响应url请求，定义Controller的行为
+7. web.xml: 把DispacherServlet注册，将spring-*.xml的所有配置文件注册，整合到一起
+
+
+-->
